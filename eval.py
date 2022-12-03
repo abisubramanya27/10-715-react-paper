@@ -142,6 +142,7 @@ if __name__ == '__main__':
             "CIFAR-10": {
                 "resnet18": 0.01,
                 "resnet18_cl1.0": 0.07,
+                "lenet": 0.04,
             },
             "CIFAR-100": {
                 "resnet18": 0.04,
@@ -152,6 +153,7 @@ if __name__ == '__main__':
                 "resnet50_cl1.0": 0.0,
                 "mobilenet": 0.03,
                 "mobilenet_cl1.3": 0.04,
+                "squeezenet": 0.04,
             }
         }
         args.method_args['magnitude'] = param_dict[args.in_dataset][args.name]

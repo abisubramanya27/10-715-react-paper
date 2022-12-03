@@ -128,7 +128,7 @@ def get_loader_out(args, dataset=(''), config_type='default', split=('train', 'v
                                                         num_workers=2)
         elif val_dataset == 'dtd':
             transform = config.transform_test_largescale if args.in_dataset in {'imagenet'} else config.transform_test
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="datasets/ood_data/dtd/images", transform=transform),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.DTD(root='./data', train=False, download=True, transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'CIFAR-100':
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR100(root='./data', train=False, download=True, transform=transform_test),
