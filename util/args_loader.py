@@ -14,7 +14,7 @@ def get_args():
     parser = argparse.ArgumentParser(description='Pytorch Detecting Out-of-distribution examples in neural networks')
 
     parser.add_argument('--in-dataset', default="imagenet", type=str, help='CIFAR-100 imagenet')
-    parser.add_argument('--out-datasets', default=['inat', 'sun50', 'places50', 'dtd'], type=list, help="['SVHN', 'LSUN', 'LSUN_resize', 'iSUN', 'dtd', 'places365']  ['inat', 'sun50', 'places50', 'dtd', ]")
+    parser.add_argument('--out-datasets', default=['dtd', 'CIFAR-100', 'SVHN'], nargs='+', help="['SVHN', 'LSUN', 'LSUN_resize', 'iSUN', 'dtd', 'places365']  ['inat', 'sun50', 'places50', 'dtd', ]")
     parser.add_argument('--name', default="resnet50", type=str, help='neural network name and training set')
     parser.add_argument('--model-arch', default='resnet50', type=str, help='model architecture [resnet50]')
     parser.add_argument('--threshold', default=1.0, type=float, help='sparsity level')
