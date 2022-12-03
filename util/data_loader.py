@@ -123,13 +123,18 @@ def get_loader_out(args, dataset=(''), config_type='default', split=('train', 'v
         batch_size = args.batch_size
         if val_dataset == 'SVHN':
             from util.svhn_loader import SVHN
-            val_ood_loader = torch.utils.data.DataLoader(SVHN('datasets/ood_data/svhn/', split='test', transform=transform_test, download=False),
+            val_ood_loader = torch.utils.data.DataLoader(SVHN('datasets/ood_data/svhn/', split='test', transform=transform_test, download=True),
                                                        batch_size=batch_size, shuffle=False,
                                                         num_workers=2)
         elif val_dataset == 'dtd':
             transform = config.transform_test_largescale if args.in_dataset in {'imagenet'} else config.transform_test
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.DTD(root='./data', train=False, download=True, transform=transform_test),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.DTD(root='./data', split='test', download=True, transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
+        # elif val_dataset == 'MNIST':
+        #     transform = config.transform_test_largescale if args.in_dataset in {'imagenet'} else config.transform_test
+        #     val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.DTD(root='./data', split='test', download=True, transform=transform_test),
+        #                                                batch_size=batch_size, shuffle=True, num_workers=2)
+            
         elif val_dataset == 'CIFAR-100':
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR100(root='./data', train=False, download=True, transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)

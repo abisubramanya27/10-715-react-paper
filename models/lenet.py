@@ -51,10 +51,22 @@ class _LeNet(nn.Module):
         return self.activation['conv1'], pool1_out.detach().cpu().numpy()
     
     def forward(self, x):
-      input_layer = self.input_layer(x)
-      hidden = self.hidden_layers(input_layer)
-      logits = self.output_layer(hidden)
-      return logits
+        input_layer = self.input_layer(x)
+        hidden = self.hidden_layers(input_layer)
+        logits = self.output_layer(hidden)
+        return logits
+
+    def forward_threshold(self, x,  threshold=1e6):
+        input_layer = self.input_layer(x)
+        hidden = self.hidden_layers(input_layer)
+        hidden = hidden.clip(max=threshold)
+        logits = self.output_layer(hidden)
+        return logits
+    
+    def forward_intermediate(self, x):
+        input_layer = self.input_layer(x)
+        hidden = self.hidden_layers(input_layer)
+        return hidden
 
 # We recommend you make this modules as the first component of your input layers 
 class Reshape(t.nn.Module):
@@ -164,8 +176,8 @@ class LeNet(object):
         self.model.load_state_dict(t.load(path,
                                           map_location=t.device(self.device)))
 
-def lenet(pretrained=False):
-    model = LeNet(params, True)
+def lenet(pretrained=False, **kwargs):
+    model_obj = LeNet(params, True)
     if pretrained:
-        model.load_weights('./weights/custom_lenet.pth')  
-    return model
+        model_obj.load_weights('./weights/custom_lenet.pth')  
+    return model_obj.model

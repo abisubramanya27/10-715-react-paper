@@ -1,0 +1,15 @@
+OOD detection method: energy Threshold: 1e6
+              FPR    AUROC  AUIN  
+dtd           62.87  83.14  96.01
+CIFAR-100     90.34  68.00  70.89
+SVHN          61.17  86.95  78.87
+AVG           71.46  79.36  81.93
+FNR:   5.01, Acc:  63.56, End-to-end Acc:  62.38
+
+OOD detection method: energy Threshold: 1
+              FPR    AUROC  AUIN  
+dtd           91.81  58.94  87.78
+CIFAR-100     91.43  58.77  58.19
+SVHN          96.67  43.68  25.67
+AVG           93.30  53.80  57.21
+FNR:   5.01, Acc:  56.44, End-to-end Acc:  54.83

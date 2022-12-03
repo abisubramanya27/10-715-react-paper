@@ -11,6 +11,7 @@ from util.metrics import compute_traditional_ood, compute_in
 from util.args_loader import get_args
 from util.data_loader import get_loader_in, get_loader_out
 from util.model_loader import get_model
+from activations import get_hidden_activations, compute_act_stats
 from score import get_score
 
 
@@ -20,13 +21,25 @@ def forward_fun(args):
             logits = model.forward(inputs, threshold=args.threshold)
         elif args.model_arch.find('resnet') > -1:
             logits = model.forward_threshold(inputs, threshold=args.threshold)
+        elif args.model_arch in {'lenet'}:
+            logits = model.forward_threshold(inputs, threshold=args.threshold)
         else:
             logits = model(inputs)
         return logits
     return forward_threshold
 
+def intermediate_forward_fun(args):
+    def forward_intermediate(inputs, model):
+        if args.model_arch in {'lenet'}:
+            hidden = model.forward_intermediate(inputs)
+        else:
+            hidden = model(inputs)    
+        return hidden
+    return forward_intermediate
+
 args = get_args()
 forward_threshold = forward_fun(args)
+forward_intermediate = intermediate_forward_fun(args)
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 torch.manual_seed(1)
 torch.cuda.manual_seed(1)
@@ -47,13 +60,14 @@ def eval_ood_detector(args, mode_args):
     loader_in_dict = get_loader_in(args, split=('val'))
     testloaderIn, num_classes = loader_in_dict.val_loader, loader_in_dict.num_classes
     method_args['num_classes'] = num_classes
-    model = get_model(args, num_classes, load_ckpt=True)
+    model = get_model(args, num_classes, load_ckpt=False)
 
     t0 = time.time()
 
     if True:
         f1 = open(os.path.join(in_save_dir, "in_scores.txt"), 'w')
         g1 = open(os.path.join(in_save_dir, "in_labels.txt"), 'w')
+        f2 = open(os.path.join(in_save_dir, "in_acts.txt"), 'w')
 
     ########################################In-distribution###########################################
         print("Processing in-distribution images")
@@ -77,6 +91,11 @@ def eval_ood_detector(args, mode_args):
 
                 for k in range(preds.shape[0]):
                     g1.write("{} {} {}\n".format(labels[k], preds[k], confs[k]))
+            
+            hidden_acts = get_hidden_activations(inputs, model, forward_intermediate)
+            for hidden_act in hidden_acts:
+                unit_acts = " ".join(hidden_act)
+                f2.write("{}\n".format(unit_acts))
 
             scores = get_score(inputs, model, forward_threshold, method, method_args, logits=logits)
             for score in scores:
@@ -88,6 +107,7 @@ def eval_ood_detector(args, mode_args):
 
         f1.close()
         g1.close()
+        f2.close()
 
     # OOD evaluation
     for out_dataset in out_datasets:
@@ -98,6 +118,7 @@ def eval_ood_detector(args, mode_args):
             os.makedirs(out_save_dir)
 
         f2 = open(os.path.join(out_save_dir, "out_scores.txt"), 'w')
+        f3 = open(os.path.join(out_save_dir, "out_acts.txt"), 'w')
 
         if not os.path.exists(out_save_dir):
             os.makedirs(out_save_dir)
@@ -123,11 +144,17 @@ def eval_ood_detector(args, mode_args):
             scores = get_score(inputs, model, forward_threshold, method, method_args, logits=logits)
             for score in scores:
                 f2.write("{}\n".format(score))
+            
+            hidden_acts = get_hidden_activations(inputs, model, forward_intermediate)
+            for hidden_act in hidden_acts:
+                unit_acts = " ".join(hidden_act)
+                f3.write("{}\n".format(unit_acts))
 
             count += curr_batch_size
             print("{:4}/{:4} images processed, {:.1f} seconds used.".format(count, N, time.time()-t0))
             t0 = time.time()
 
+        f2.close()
         f2.close()
 
     return
@@ -171,3 +198,6 @@ if __name__ == '__main__':
     eval_ood_detector(args, mode_args)
     compute_traditional_ood(args.base_dir, args.in_dataset, args.out_datasets, args.method, args.name)
     compute_in(args.base_dir, args.in_dataset, args.method, args.name)
+    in_save_dir = os.path.join(args.base_dir, args.in_dataset, args.method, args.name)
+    compute_act_stats(in_save_dir, args.out_datasets, args.in_dataset, p=0.9)
+    
