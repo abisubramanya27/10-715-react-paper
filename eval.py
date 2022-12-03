@@ -94,8 +94,7 @@ def eval_ood_detector(args, mode_args):
             
             hidden_acts = get_hidden_activations(inputs, model, forward_intermediate)
             for hidden_act in hidden_acts:
-                unit_acts = " ".join(hidden_act)
-                f2.write("{}\n".format(unit_acts))
+                print(*list(hidden_act), sep=' ', file=f2)
 
             scores = get_score(inputs, model, forward_threshold, method, method_args, logits=logits)
             for score in scores:
@@ -147,15 +146,14 @@ def eval_ood_detector(args, mode_args):
             
             hidden_acts = get_hidden_activations(inputs, model, forward_intermediate)
             for hidden_act in hidden_acts:
-                unit_acts = " ".join(hidden_act)
-                f3.write("{}\n".format(unit_acts))
+                print(*list(hidden_act), sep=' ', file=f3)
 
             count += curr_batch_size
             print("{:4}/{:4} images processed, {:.1f} seconds used.".format(count, N, time.time()-t0))
             t0 = time.time()
 
         f2.close()
-        f2.close()
+        f3.close()
 
     return
 
