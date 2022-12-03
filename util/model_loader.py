@@ -21,6 +21,12 @@ def get_model(args, num_classes, load_ckpt=True):
         elif args.model_arch == 'resnet50':
             from models.resnet import resnet50_cifar
             model = resnet50_cifar(num_classes=num_classes, method=args.method)
+        elif args.model_arch == 'lenet':
+            from models.lenet import lenet
+            model = lenet(num_classes=num_classes, pretrained=True)
+        elif args.model_arch == 'squeezenet':
+            from models.squeezenet import squeezenet
+            model = squeezenet(num_classes=num_classes, pretrained=True)
         else:
             assert False, 'Not supported model arch: {}'.format(args.model_arch)
 
