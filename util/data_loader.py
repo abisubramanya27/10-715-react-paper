@@ -3,6 +3,7 @@ import torch
 import torchvision
 from torchvision import transforms
 from easydict import EasyDict
+from datasets import load_dataset
 
 imagesize = 32
 
@@ -22,7 +23,7 @@ transform_train = transforms.Compose([
 
 transform_train_largescale = transforms.Compose([
     transforms.Resize(256),
-    transforms.RandomSizedCrop(224),
+    transforms.RandomResizedCrop(224),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -70,15 +71,20 @@ def get_loader_in(args, config_type='default', split=('train', 'val')):
             val_loader = torch.utils.data.DataLoader(valset, batch_size=config.batch_size, shuffle=True, **kwargs)
         num_classes = 100
     elif args.in_dataset == "imagenet":
-        root = 'datasets/id_data/imagenet'
+        # root = 'datasets/id_data/imagenet'
+
         # Data loading code
         if 'train' in split:
+            train_dataset = load_dataset("imagenet-1k", split='train', use_auth_token='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')
+            train_dataset.set_transform(config.transform_train_largescale)
             train_loader = torch.utils.data.DataLoader(
-                torchvision.datasets.ImageFolder(os.path.join(root, 'train'), config.transform_train_largescale),
+                train_dataset,
                 batch_size=config.batch_size, shuffle=True, **kwargs)
         if 'val' in split:
+            val_dataset = load_dataset("imagenet-1k", split='val', use_auth_token='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')
+            val_dataset.set_transform(config.transform_test_largescale)
             val_loader = torch.utils.data.DataLoader(
-                torchvision.datasets.ImageFolder(os.path.join(root, 'val'), config.transform_test_largescale),
+                val_dataset,
                 batch_size=config.batch_size, shuffle=True, **kwargs)
         num_classes = 1000
 
@@ -141,9 +147,12 @@ def get_loader_out(args, dataset=(''), config_type='default', split=('train', 'v
                                                  transform=config.transform_test_largescale), batch_size=batch_size, shuffle=False,
                 num_workers=2)
         elif val_dataset == 'imagenet':
-            val_ood_loader = torch.utils.data.DataLoader(
-                torchvision.datasets.ImageFolder(os.path.join('./datasets/id_data/imagenet', 'val'), config.transform_test_largescale),
-                batch_size=config.batch_size, shuffle=True, **kwargs)
+            # val_ood_loader = torch.utils.data.DataLoader(
+            #     torchvision.datasets.ImageFolder(os.path.join('./datasets/id_data/imagenet', 'val'), config.transform_test_largescale),
+            #     batch_size=config.batch_size, shuffle=True, **kwargs)
+            dataset = load_dataset("imagenet-1k", split='val', use_auth_token='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')
+            dataset.set_transform(config.transform_test_largescale)
+            val_ood_loader = torch.utils.data.DataLoader(dataset, batch_size=config.batch_size, shuffle=True, **kwargs)
         else:
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder("./datasets/ood_data/{}".format(val_dataset),
                                                           transform=transform_test), batch_size=batch_size, shuffle=False, num_workers=2)
