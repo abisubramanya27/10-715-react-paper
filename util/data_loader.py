@@ -14,6 +14,11 @@ transform_test = transforms.Compose([
     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
 ])
 
+transform_cifar = transforms.Compose([
+    transforms.ToTensor(), 
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+])
+
 transform_train = transforms.Compose([
     transforms.RandomCrop(imagesize, padding=4),
     transforms.RandomHorizontalFlip(),
@@ -63,10 +68,10 @@ def get_loader_in(args, config_type='default', split=('train', 'val')):
     if args.in_dataset == "CIFAR-10":
         # Data loading code
         if 'train' in split:
-            trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=config.transform_train)
+            trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=config.transform_cifar)
             train_loader = torch.utils.data.DataLoader(trainset, batch_size=config.batch_size, shuffle=True, **kwargs)
         if 'val' in split:
-            valset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
+            valset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_cifar)
             val_loader = torch.utils.data.DataLoader(valset, batch_size=config.batch_size, shuffle=True, **kwargs)
         num_classes = 10
     elif args.in_dataset == "CIFAR-100":
@@ -139,7 +144,7 @@ def get_loader_out(args, dataset=(''), config_type='default', split=('train', 'v
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.DTD(root='./data', split='test', download=True, transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'MNIST':
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.MNIST(root='./data', split='test', download=True, transform=transform_mnist),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform_mnist),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
             
         elif val_dataset == 'CIFAR-100':
