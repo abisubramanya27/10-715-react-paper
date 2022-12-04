@@ -11,6 +11,7 @@ def plot(mean, std, title):
     plt.title(title)
     plt.show()
 
+
 def get_hidden_activations(inputs, model, forward_intermediate):
     with torch.no_grad():
         hidden = forward_intermediate(inputs, model)

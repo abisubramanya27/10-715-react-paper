@@ -18,7 +18,7 @@ params = {'model': 'lenet',
           'adjust_norm_step': 1_000,
           'output_l2_decay': 0.001,
           'pooling': 'max',
-          'activation':'relu',
+          'activation':'tanh',
           'random_seed': 0}
 
 class _LeNet(nn.Module):
@@ -78,7 +78,7 @@ class LeNet(object):
         super().__init__()
         self.params = params
         self.device = t.device('cuda' if t.cuda.is_available() else 'cpu')
-        self.activations = {'logistic': nn.Sigmoid(), 'relu': nn.ReLU()}
+        self.activations = {'logistic': nn.Sigmoid(), 'relu': nn.ReLU(), 'tanh': nn.Tanh()}
         self.pooling = {'avg':nn.AvgPool2d(kernel_size=2, stride=2),'max':nn.MaxPool2d(kernel_size=2, stride=2)}
         # Instantiate model
         t.manual_seed(self.params['random_seed'])
@@ -179,5 +179,5 @@ class LeNet(object):
 def lenet(pretrained=False, **kwargs):
     model_obj = LeNet(params, True)
     if pretrained:
-        model_obj.load_weights('./weights/custom_lenet.pth')  
+        model_obj.load_weights('./weights/custom_lenet_tanh.pth')  
     return model_obj.model
