@@ -18,7 +18,7 @@ params = {'model': 'lenet',
           'adjust_norm_step': 1_000,
           'output_l2_decay': 0.001,
           'pooling': 'max',
-          'activation':'tanh',
+          'activation':'relu',
           'random_seed': 0}
 
 class _LeNet(nn.Module):
@@ -179,5 +179,5 @@ class LeNet(object):
 def lenet(pretrained=False, **kwargs):
     model_obj = LeNet(params, True)
     if pretrained:
-        model_obj.load_weights('./weights/custom_lenet_tanh.pth')  
+        model_obj.load_weights('./weights/custom_lenet.pth')  
     return model_obj.model

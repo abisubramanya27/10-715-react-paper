@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 
 def plot(mean, std, title):
     plt.figure(0)
-    plt.vlines(np.arange(1, len(mean)+1), mean - 2*std, mean + 2*std, color='k', lw=0.5)
+    plt.vlines(np.arange(1, len(mean)+1), np.maximum(mean - 2*std, 0), mean + 2*std, color='k', lw=0.5)
     plt.plot(np.arange(1, len(mean)+1), mean, color='deepskyblue', lw=1)
     plt.xlabel('Unit Indices')
     plt.ylabel('Unit Activations')
     plt.title(title)
+    plt.savefig(title)
     plt.show()
 
 

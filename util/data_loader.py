@@ -38,6 +38,14 @@ transform_test_largescale = transforms.Compose([
                          std=[0.229, 0.224, 0.225]),
 ])
 
+transform_mnist = transforms.Compose([
+    transforms.Resize((imagesize, imagesize)),
+    transforms.ToTensor(),
+    transforms.Lambda(lambda x: x.repeat(3, 1, 1)),
+    transforms.Normalize(mean=(0.1307, 0.1307, 0.1307),
+                         std=(0.3081, 0.3081, 0.3081)),
+])
+
 kwargs = {'num_workers': 2, 'pin_memory': True}
 
 def get_loader_in(args, config_type='default', split=('train', 'val')):
@@ -130,10 +138,9 @@ def get_loader_out(args, dataset=(''), config_type='default', split=('train', 'v
             transform = config.transform_test_largescale if args.in_dataset in {'imagenet'} else config.transform_test
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.DTD(root='./data', split='test', download=True, transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
-        # elif val_dataset == 'MNIST':
-        #     transform = config.transform_test_largescale if args.in_dataset in {'imagenet'} else config.transform_test
-        #     val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.DTD(root='./data', split='test', download=True, transform=transform_test),
-        #                                                batch_size=batch_size, shuffle=True, num_workers=2)
+        elif val_dataset == 'MNIST':
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.MNIST(root='./data', split='test', download=True, transform=transform_mnist),
+                                                       batch_size=batch_size, shuffle=True, num_workers=2)
             
         elif val_dataset == 'CIFAR-100':
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR100(root='./data', train=False, download=True, transform=transform_test),
