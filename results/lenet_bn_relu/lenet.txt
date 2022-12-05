@@ -1,0 +1,26 @@
+OOD detection method: energy Threshold 1e6
+              FPR    AUROC  AUIN  
+dtd           92.29  56.03  85.00
+SVHN          93.13  65.22  46.41
+CIFAR-100     95.96  44.35  44.37
+MNIST         99.99  21.86  35.27
+AVG           95.34  46.86  52.76
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+
+Input Dataset: CIFAR-10 Chosen c for p = 0.9: 0.7963155042034487
+Dataset: dtd p: 0.6625
+Dataset: SVHN p: 0.7875
+Dataset: CIFAR-100 p: 0.6
+Dataset: MNIST p: 0.675
+
+OOD detection method: energy Threshold 0.796
+              FPR    AUROC  AUIN  
+dtd           75.32  79.67  95.27
+SVHN          87.75  68.25  46.48
+CIFAR-100     72.29  81.07  81.02
+MNIST         77.04  88.44  91.33
+AVG           78.10  79.36  78.53
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+
+

@@ -53,6 +53,18 @@ transform_mnist = transforms.Compose([
 
 kwargs = {'num_workers': 2, 'pin_memory': True}
 
+class AddGaussianNoise(object):
+    def __init__(self, mean=0., std=1.):
+        self.std = std
+        self.mean = mean
+        
+    def __call__(self, tensor):
+        return tensor + torch.randn(tensor.size()) * self.std + self.mean
+    
+    def __repr__(self):
+        return self.__class__.__name__ + '(mean={0}, std={1})'.format(self.mean, self.std)
+
+
 def get_loader_in(args, config_type='default', split=('train', 'val')):
     config = EasyDict({
         "default": {
@@ -169,7 +181,16 @@ def get_loader_out(args, dataset=(''), config_type='default', split=('train', 'v
             #     batch_size=config.batch_size, shuffle=True, **kwargs)
             dataset = load_dataset("imagenet-1k", split='val', use_auth_token='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')
             dataset.set_transform(config.transform_test_largescale)
-            val_ood_loader = torch.utils.data.DataLoader(dataset, batch_size=config.batch_size, shuffle=True, **kwargs)
+            val_ood_loader = torch.utils.data.DataLoader(dataset, batch_size=config.batch_size, shuffle=True, **kwargs) 
+        elif val_dataset.startswith('CIFAR-10'):
+            std = float(val_dataset.rsplit('-')[-1])
+            transform = transforms.Compose([
+                transforms.ToTensor(), 
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                AddGaussianNoise(0., std),
+            ])
+            valset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
+            val_ood_loader = torch.utils.data.DataLoader(valset, batch_size=config.batch_size, shuffle=True, **kwargs)
         else:
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder("./datasets/ood_data/{}".format(val_dataset),
                                                           transform=transform_test), batch_size=batch_size, shuffle=False, num_workers=2)
