@@ -24,3 +24,180 @@ FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
 
 
 
+
+---- Gaussian noise added
+std = 0
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0    94.99  50.00  50.00
+AVG           94.99  50.00  50.00
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0    94.99  50.00  50.00
+AVG           94.99  50.00  50.00
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 1
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-1    99.68  24.11  35.71
+AVG           99.68  24.11  35.71
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+
+Input Dataset: CIFAR-10 Chosen c for p = 0.9: 0.7963155042034487
+Dataset: CIFAR-10-1 p: 0.675
+
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-1    92.92  65.90  71.81
+AVG           92.92  65.90  71.81
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.5
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.5  94.71  52.38  52.53
+AVG           94.71  52.38  52.53
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+
+Input Dataset: CIFAR-10 Chosen c for p = 0.9: 0.7963155042034487
+Dataset: CIFAR-10-0.5 p: 0.675
+
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.5  86.76  73.91  75.94
+AVG           86.76  73.91  75.94
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 2
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-2   100.00   2.80  30.88
+AVG          100.00   2.80  30.88
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+
+Input Dataset: CIFAR-10 Chosen c for p = 0.9: 0.7963155042034487
+Dataset: CIFAR-10-2 p: 0.675
+
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-2    95.47  66.27  73.25
+AVG           95.47  66.27  73.25
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+
+std = 0.1
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.1  94.35  52.62  52.38
+AVG           94.35  52.62  52.38
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+
+Input Dataset: CIFAR-10 Chosen c for p = 0.9: 0.7963155042034487
+Dataset: CIFAR-10-0.1 p: 0.875
+
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.1  94.12  53.89  53.81
+AVG           94.12  53.89  53.81
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.2
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.2  93.11  56.87  56.11
+AVG           93.11  56.87  56.11
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.2  91.20  61.89  61.76
+AVG           91.20  61.89  61.76
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.4
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.4  93.47  56.85  56.19
+AVG           93.47  56.85  56.19
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.4  86.82  72.95  74.47
+AVG           86.82  72.95  74.47
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+
+std = 0.6
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.6  96.36  46.61  48.13
+AVG           96.36  46.61  48.13
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.6  87.60  72.80  75.36
+AVG           87.60  72.80  75.36
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.8
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.8  98.95  34.55  40.44
+AVG           98.95  34.55  40.44
+FNR:   5.01, Acc:  71.81, End-to-end Acc:  70.09
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.8  90.80  68.65  73.00
+AVG           90.80  68.65  73.00
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+---- Gaussian Noise normalize after adding noise
+std = 0.1
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.1  91.20  61.89  61.76
+AVG           91.20  61.89  61.76
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.2
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.2  86.82  72.95  74.47
+AVG           86.82  72.95  74.47
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.4
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.4  90.80  68.65  73.00
+AVG           90.80  68.65  73.00
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.5
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.5  92.92  65.90  71.81
+AVG           92.92  65.90  71.81
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.6
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.6  94.31  65.01  71.69
+AVG           94.31  65.01  71.69
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 0.8
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-0.8  95.19  65.29  72.33
+AVG           95.19  65.29  72.33
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18
+
+std = 1
+OOD detection method: energy
+              FPR    AUROC  AUIN  
+CIFAR-10-1    95.47  66.27  73.25
+AVG           95.47  66.27  73.25
+FNR:   5.01, Acc:  67.84, End-to-end Acc:  66.18

@@ -156,6 +156,7 @@ class LeNet(object):
             self.pooling[self.params['pooling']],
             nn.Conv2d(64, 128, kernel_size=4, stride=1, padding=0),
             self.activations[self.params['activation']],
+            nn.BatchNorm2d(128),
             nn.Flatten(),
             nn.Linear(128, 80),
             self.activations[self.params['activation']]
@@ -179,5 +180,5 @@ class LeNet(object):
 def lenet(pretrained=False, **kwargs):
     model_obj = LeNet(params, True)
     if pretrained:
-        model_obj.load_weights('./weights/custom_lenet.pth')  
+        model_obj.load_weights('./weights/custom_lenet_bn.pth')  
     return model_obj.model
